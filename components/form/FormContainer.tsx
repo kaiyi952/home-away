@@ -19,7 +19,7 @@ function FormContainer({ action, children }: { action: actionFunction, children:
         }
     }, [state])
 
-    return <form action={formAction }>{children}</form>
+    return <form action={formAction}>{children}</form>
 }
 
 export default FormContainer
