@@ -3,6 +3,8 @@ import FormInput from "@/components/form/FormInput"
 import { createProfileAction } from "@/utils/actions"
 import { SubmitButton } from "@/components/form/Buttons"
 import PriceInput from "@/components/form/PriceInput"
+import CategoriesInput from "@/components/form/CategoriesInput"
+import TextAreaInput from "@/components/form/TextAreaInput"
 
 function CreatePropertyPage() {
   return (
@@ -18,9 +20,11 @@ function CreatePropertyPage() {
                       <FormInput name='tagline' type='text' label='Tagline (30 limit)' defaultValue='Dream Getaway Awaits You Here' />
                       {/* price */}
                       <PriceInput/>
-                       {/* categories */}
+                      {/* categories */}
+                      <CategoriesInput/>
                   </div>
                   {/* text area / description*/}
+                  <TextAreaInput name="description" labelText="Description (10-1000 words)"/>
                   <SubmitButton text='create rental' className='mt-12' />
               </FormContainer>
           </div>
