@@ -71,7 +71,7 @@ export const propertySchema = z.object({
     message: 'beds amount must be a positive number.',
   }),
   baths: z.coerce.number().int().min(0, {
-    message: 'bahts amount must be a positive number.',
+    message: 'baths amount must be a positive number.',
   }),
   amenities: z.string(),
 });
