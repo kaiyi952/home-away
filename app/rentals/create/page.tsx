@@ -1,6 +1,6 @@
 import FormContainer from "@/components/form/FormContainer"
 import FormInput from "@/components/form/FormInput"
-import { createProfileAction } from "@/utils/actions"
+import { createProfileAction, createPropertyAction } from "@/utils/actions"
 import { SubmitButton } from "@/components/form/Buttons"
 import PriceInput from "@/components/form/PriceInput"
 import CategoriesInput from "@/components/form/CategoriesInput"
@@ -18,7 +18,7 @@ function CreatePropertyPage() {
           </h1>
           <div className='border p-8 rounded'>
               <h3 className="text-lg mb-4 font-medium">General Info</h3>
-              <FormContainer action={createProfileAction}>
+              <FormContainer action={createPropertyAction}>
                   <div className='grid md:grid-cols-2 gap-8 mb-4'>
                       <FormInput name='name' type='text' label='Name (20 limit)' defaultValue='Cabin in Latvia' />
                       <FormInput name='tagline' type='text' label='Tagline (30 limit)' defaultValue='Dream Getaway Awaits You Here' />
