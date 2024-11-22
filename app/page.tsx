@@ -10,8 +10,8 @@ function HomePage(
   }
 ) {
   return <section>
-    <CategoriesList category={searchParams.catogory} search={searchParams.search } />
-    <PropertiesContainer category={searchParams.catogory} search={searchParams.search }/>
+    <CategoriesList category={searchParams.category} search={searchParams.search } />
+    <PropertiesContainer category={searchParams.category} search={searchParams.search }/>
   </section>
 }
 

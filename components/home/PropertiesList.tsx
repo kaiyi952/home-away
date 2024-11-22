@@ -1,16 +1,15 @@
-import React from 'react'
+import PropertyCard from '../card/PropertyCard';
+import type { PropertyCardProps } from "@/utils/types";
 
 function PropertiesList(
-    {
-        category,
-        search,
-    }: {
-            category?: string;
-          search?: string;
-    }
+        {properties}:{properties:PropertyCardProps[]}  
 ) {
-  return 
-    <div>PropertiesList</div>;
+  return (
+    <section>
+        {properties.map((property) => {
+            return <PropertyCard key={property.id} property = {property}/>;
+        })}
+    </section>)
 }
 
 export default PropertiesList;

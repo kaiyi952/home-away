@@ -170,10 +170,12 @@ export const fetchProperties = async ({ search = '', category, }: { search?: str
                 tagline: true,
                 country: true,
                 price: true,
+                image: true,
             },
             orderBy: {
                 createdAt:'desc',
             },
         }
     )
+    return properties;
 }
