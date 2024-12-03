@@ -1,5 +1,7 @@
 import CategoriesList from "@/components/home/CategoriesList";
 import PropertiesContainer from "@/components/home/PropertiesContainer";
+import { Suspense } from "react";
+import LoadingCards from '@/components/card/LoadingCards';
 import { Button } from "@/components/ui/button";
 
 function HomePage( 
@@ -10,8 +12,10 @@ function HomePage(
   }
 ) {
   return <section>
-    <CategoriesList category={searchParams.category} search={searchParams.search } />
-    <PropertiesContainer category={searchParams.category} search={searchParams.search }/>
+    <CategoriesList category={searchParams.category} search={searchParams.search} />
+    <Suspense fallback= {<LoadingCards />}>
+    <PropertiesContainer category={searchParams.category} search={searchParams.search} />
+    </Suspense>
   </section>
 }
 
