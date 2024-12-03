@@ -9,14 +9,16 @@ function CounterInput({ detail, defaultValue }: { detail: string, defaultValue?:
   const [count, setCount] = useState(defaultValue || 0)
 
   const increaseCount = () => {
+    const defaultValue = 0
     setCount((prevCount) => prevCount + 1);
   };
 
   const decreaseCount = () => {
     setCount((prevCount) => { 
-      if (prevCount > 0) {
-        return prevCount - 1
-      }return prevCount
+      // if (prevCount > 0) {
+      //   return prevCount - 1
+      // }
+      return Math.max(0, prevCount - 1);
     });
   };
 
