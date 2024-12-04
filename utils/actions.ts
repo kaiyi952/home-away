@@ -161,7 +161,7 @@ export const fetchProperties = async ({ search = '', category, }: { search?: str
                 category,
                 OR: [
                     { name: { contains: search, mode: 'insensitive' } },
-                    {tagline: {contains: search, mode: 'insensitive'}},
+                    { tagline: { contains: search, mode: 'insensitive' } },
                 ],
             },
             select: {
@@ -173,9 +173,31 @@ export const fetchProperties = async ({ search = '', category, }: { search?: str
                 image: true,
             },
             orderBy: {
-                createdAt:'desc',
+                createdAt: 'desc',
             },
         }
     )
     return properties;
+};
+
+export const fetchFavoriteId = async ({
+  propertyId,
+}: {
+  propertyId: string;
+}) => {
+  const user = await getAuthUser();
+  const favorite = await db.favorite.findFirst({
+    where: {
+      propertyId,
+      profileId: user.id,
+    },
+    select: {
+      id: true,
+    },
+  });
+  return favorite?.id || null;
+};
+
+export const toggleFavoriteAction = async () => {
+    return { message: 'toggle favorite' };
 }

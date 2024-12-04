@@ -25,7 +25,7 @@ function NavSearch() {
     }
   }, [searchParams.get('search')])
 
-  return <Input type="text" placeholder="find a property..." className="max-w-xs dark:bg-muted"
+  return <Input type="text" placeholder="find a property..." value={search} className="max-w-xs dark:bg-muted"
     onChange={(e) => {
       setSearch(e.target.value);
       handleSearch(e.target.value);
