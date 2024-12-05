@@ -198,6 +198,14 @@ export const fetchFavoriteId = async ({
   return favorite?.id || null;
 };
 
-export const toggleFavoriteAction = async () => {
+export const toggleFavoriteAction = async (
+    prevState: {
+        propertyId: string;
+        favoriteId: string | null;
+        pathname: string;
+    }
+) => {
+    const { propertyId, favoriteId, pathname } = prevState
+    console.log(propertyId, favoriteId, pathname);
     return { message: 'toggle favorite' };
 }
