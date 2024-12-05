@@ -10,7 +10,8 @@ import { uploadImage } from "./supabase";
 
 const getAuthUser = async () => {
     const user = await currentUser()
-    if (!user) {throw new Error('You must be logged in to access this route');
+    if (!user) {
+        throw new Error('You must be logged in to access this route');
     }
     if (!user.privateMetadata.hasProfile) redirect('/profile/create');
     return user;
@@ -18,18 +19,18 @@ const getAuthUser = async () => {
 
 const renderError = (error: unknown): { message: string } => {
     console.log(error);
-    
-    return { message: error instanceof Error? error.message: 'An error occurred', };
-    
+
+    return { message: error instanceof Error ? error.message : 'An error occurred', };
+
 }
 
-export const createProfileAction = async (prevState:any,formData: FormData) => {
+export const createProfileAction = async (prevState: any, formData: FormData) => {
     try {
         const user = await currentUser()
         if (!user) throw new Error('Please login to create a profile');
-        
-       const rawData = Object.fromEntries(formData);
-       const validatedFields = profileSchema.parse(rawData);
+
+        const rawData = Object.fromEntries(formData);
+        const validatedFields = profileSchema.parse(rawData);
         await db.profile.create(
             {
                 data: {
@@ -45,12 +46,12 @@ export const createProfileAction = async (prevState:any,formData: FormData) => {
                 hasProfile: true,
             },
         })
-        
+
     } catch (error) {
         // console.log(error.message)
         return renderError(error);
-      
-    
+
+
     }
     redirect('/')
 }
@@ -58,7 +59,7 @@ export const createProfileAction = async (prevState:any,formData: FormData) => {
 export const fetchProfileImage = async () => {
     const user = await currentUser();
     if (!user) return null;
-    
+
     const profile = await db.profile.findUnique({
         where: {
             clerkId: user.id,
@@ -84,30 +85,30 @@ export const fetchProfile = async () => {
 
 export const updateProfileAction = async (prevState: any, formData: FormData): Promise<{ message: string }> => {
     const user = await getAuthUser()
-    
+
     try {
-         const rawData = Object.fromEntries(formData);
+        const rawData = Object.fromEntries(formData);
         const validatedFields = validateWithZodSchema(profileSchema, rawData)
-    
+
         await db.profile.update({
-            where:{
-                clerkId:user.id
+            where: {
+                clerkId: user.id
             },
-            data:validatedFields
+            data: validatedFields
         })
         revalidatePath('/profile');
-        return {message:'Profile updated sucessfully'}
+        return { message: 'Profile updated sucessfully' }
     } catch (error) {
-         return renderError(error);
+        return renderError(error);
     }
 }
 
 export const updateProfileImageAction = async (
-  prevState: any,
-  formData: FormData
+    prevState: any,
+    formData: FormData
 ): Promise<{ message: string }> => {
     const user = await getAuthUser();
-    
+
     try {
         const image = formData.get('image') as File;
         const validatedFields = validateWithZodSchema(imageSchema, { image });
@@ -122,36 +123,36 @@ export const updateProfileImageAction = async (
             },
         });
         revalidatePath('/profile');
-    return { message: 'Profile image updated successfully' };
-} catch (error) {
+        return { message: 'Profile image updated successfully' };
+    } catch (error) {
         return renderError(error);
-}
+    }
 };
 
 export const createPropertyAction = async (
-  prevState: any,
-  formData: FormData
+    prevState: any,
+    formData: FormData
 ): Promise<{ message: string }> => {
-  const user = await getAuthUser();
-  try {
-    const rawData = Object.fromEntries(formData);
-    const file = formData.get('image') as File;
+    const user = await getAuthUser();
+    try {
+        const rawData = Object.fromEntries(formData);
+        const file = formData.get('image') as File;
 
-    const validatedFields = validateWithZodSchema(propertySchema, rawData);
-    const validatedFile = validateWithZodSchema(imageSchema, { image: file });
-    const fullPath = await uploadImage(validatedFile.image);
+        const validatedFields = validateWithZodSchema(propertySchema, rawData);
+        const validatedFile = validateWithZodSchema(imageSchema, { image: file });
+        const fullPath = await uploadImage(validatedFile.image);
 
-    await db.property.create({
-      data: {
-        ...validatedFields,
-        image: fullPath,
-        profileId: user.id,
-      },
-    });
-  } catch (error) {
-    return renderError(error);
-  }
-  redirect('/');
+        await db.property.create({
+            data: {
+                ...validatedFields,
+                image: fullPath,
+                profileId: user.id,
+            },
+        });
+    } catch (error) {
+        return renderError(error);
+    }
+    redirect('/');
 };
 
 export const fetchProperties = async ({ search = '', category, }: { search?: string; category?: string; }) => {
@@ -181,21 +182,21 @@ export const fetchProperties = async ({ search = '', category, }: { search?: str
 };
 
 export const fetchFavoriteId = async ({
-  propertyId,
+    propertyId,
 }: {
-  propertyId: string;
+    propertyId: string;
 }) => {
-  const user = await getAuthUser();
-  const favorite = await db.favorite.findFirst({
-    where: {
-      propertyId,
-      profileId: user.id,
-    },
-    select: {
-      id: true,
-    },
-  });
-  return favorite?.id || null;
+    const user = await getAuthUser();
+    const favorite = await db.favorite.findFirst({
+        where: {
+            propertyId,
+            profileId: user.id,
+        },
+        select: {
+            id: true,
+        },
+    });
+    return favorite?.id || null;
 };
 
 export const toggleFavoriteAction = async (
@@ -205,7 +206,28 @@ export const toggleFavoriteAction = async (
         pathname: string;
     }
 ) => {
-    const { propertyId, favoriteId, pathname } = prevState
-    console.log(propertyId, favoriteId, pathname);
-    return { message: 'toggle favorite' };
+    const user = await getAuthUser();
+    const { propertyId, favoriteId, pathname } = prevState;
+    try {
+        if (favoriteId) {
+            await db.favorite.delete(
+                {
+                    where: {
+                        id: favoriteId,
+                    },
+                });
+        } else {
+            await db.favorite.create(
+                {
+                    data: {
+                        propertyId,
+                        profileId: user.id,
+                    },
+                });
+        }
+        revalidatePath(pathname);
+        return { message: favoriteId ? 'Removed from Faves' : 'Added to Faves' }
+    } catch (error) {
+        return renderError(error);
+    }
 }
