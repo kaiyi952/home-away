@@ -16,6 +16,8 @@ function Description({ description }: { description: string }) {
 
     const displayedDescription = isLongDescription && !isFullDescriptionShown ? words.splice(0, 100).join(' ') + '...' : description;
 
+
+
     return (
         <article className='mt-4'>
             <Title text='Description' />
