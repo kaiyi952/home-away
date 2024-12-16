@@ -14,6 +14,8 @@ import Amenities from "@/components/properties/Amenities";
 import { amenities } from "@/utils/amenities";
 import dynamic from "next/dynamic";
 import { Skeleton } from "@/components/ui/skeleton";
+import SubmitReview from "@/components/reviews/SubmitReview";
+import PropertyReviews from "@/components/reviews/PropertyReviews";
 const DynamicMap = dynamic(
     () => import('@/components/properties/PropertyMap'),
     {
@@ -60,8 +62,11 @@ async function PropertyDetailsPage({ params }: { params: { id: string } }) {
                 <div className="lg:col-span-4 flex flex-col items-center">
                     {/*calendar*/}
                     <BookingCalendar />
+
                 </div>
             </section>
+            <SubmitReview propertyId={property.id} />
+            <PropertyReviews propertyId={property.id} />
         </section>
     )
 }
