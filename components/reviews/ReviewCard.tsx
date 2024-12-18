@@ -13,7 +13,7 @@ type ReviewCardProps = {
 
 const ReviewCard: FC<PropsWithChildren<ReviewCardProps>> = ({ reviewInfo, children }) => {
     // function ReviewCard({ reviewInfo, children }: ReviewCardProps) {
-    return <Card>
+    return <Card className='relative'>
         <CardHeader>
             <div className='flex items-center'>
                 <img src={reviewInfo.image} alt='profile' className='w-12 h-12 rounded-full object-cover' />
