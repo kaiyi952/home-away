@@ -25,8 +25,6 @@ export default function RootLayout({
             <Navbar />
             <main className="container py-10">{children}</main>
           </Providers>
-
-
         </body>
       </html>
     </ClerkProvider>
